@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block top %}로그인{% endblock top %}
+
+{% block content %}
+    <div class="default-wrapper">
+        <form id="account-form" method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %}
+            {{ form.username }}
+            {% if failed and not form.username.errors %}
+                <span class="error-message">존재하지 않는 아이디입니다.</span>
+            {% endif %}
+            {{ form.password }}
+            {% if failed and form.username.errors %}
+                <span class="error-message">아이디 또는 비밀번호가 맞지 않습니다.</span>
+            {% endif %}
+            <button class="primary-color register-button">로그인</button>
+            <div id="hagi-text" class="text-center">
+                계정이 없으신가요? <a class="text-button" href="{% url 'account_signup' %}">가입하기</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

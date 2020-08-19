@@ -1,0 +1,3 @@
+bootstrap* linguist-vendored
+lodash* linguist-vendored
+vue.js linguist-vendored

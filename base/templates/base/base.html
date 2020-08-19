@@ -1,0 +1,53 @@
+{% load static %}
+
+{% with ver='1.0.0' %}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet"> {# 본문용 #}
+
+    <title>{% block title %}{% endblock title %}DCrew</title>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="{% static 'dcrew/js/vue.js' %}"></script>
+    <script src="{% static 'dcrew/js/lodash.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'base/css/base.css' %}?{{ ver }}"/>
+    {% block css %}
+    {% endblock css %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {# 모바일 대응 #}
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <header>
+        <div id="header-back" class="primary-color">
+            {# uesr button #}
+            <div id="user-button-wrapper">
+                {% if user.is_authenticated %}
+                    안녕하세요, {{ user.first_name }}님!<a class="text-button" href="{% url 'account_logout' %}">로그아웃</a>
+                {% else %}
+                    로그인을 해주세요!<a class="text-button" href="{% url 'account_login' %}">로그인</a>
+                {% endif %}
+            </div>
+            {# user button end #}
+        </div>
+    </header>
+    <div id="body-wrapper">
+        <div id="top-wrapper">
+            {% block top %}
+            {% endblock top %}
+        </div>
+        <div id="content-wrapper">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+    {% block script %}
+    {% endblock script %}
+</body>
+
+</html>
+
+{% endwith %}

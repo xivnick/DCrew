@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+
+{% block top %}회원가입{% endblock top %}
+
+{% block content %}
+    <div class="default-wrapper">
+        <form id="account-form" method="POST" action="{% url 'account_signup' %}?{{ ver }}">
+            {% csrf_token %}
+            {{ form.username }}
+            {% if form.username.errors %}
+                {# <span class="error-message">{{ form.username.errors.0 }}</span> #}
+                <span class="error-message">이미 존재하는 아이디입니다.</span>
+            {% endif %}
+            {{ form.password }}
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                {# <span class="error-message">{{ form.password2.errors.0 }}</span> #}
+                <span class="error-message">비밀번호가 일치하지 않습니다.</span>
+            {% endif %}
+            {{ form.first_name }}
+            {{ form.email }}
+            {% if form.email.errors %}
+                {# <span class="error-message">{{ form.email.errors.0 }}</span> #}
+                <span class="error-message">정상적인 이메일을 입력해 주세요.</span>
+            {% endif %}
+            <button class="primary-color register-button">회원가입</button>
+            <div id="hagi-text" class="text-center">
+                이미 계정이 있으신가요? <a class="text-button" href="{% url 'account_login' %}">로그인하기</a>
+            </div>
+            <script>
+                {% for error in form.errors %}
+                    console.log( "{{ error }}" );
+                {% endfor %}
+            </script>
+        </form>
+    </div>
+{% endblock content %}
