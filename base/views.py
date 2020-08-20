@@ -7,7 +7,7 @@ def root(req):
     if req.user.is_anonymous:
         return redirect('account_login')
 
-    return redirect('base')
+    return redirect('room_list')
 
 
 def base(req):
