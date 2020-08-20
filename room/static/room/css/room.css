@@ -1,0 +1,78 @@
+@charset "UTF-8";
+.room-wrapper {
+  position: relative;
+  width: calc(100% - 2px);
+  height: 100px;
+  margin-top: 10px;
+  background-color: #F5FAFF;
+  border: 1px solid #767676;
+  border-radius: 4px; }
+  .room-wrapper:first-child {
+    margin-top: 0; }
+  .room-wrapper .room-header-wrapper {
+    position: absolute;
+    top: 20px;
+    left: 16px;
+    width: calc(100% - 32px); }
+    .room-wrapper .room-header-wrapper .room-status-wrapper {
+      width: 48px;
+      height: 25px;
+      line-height: 25px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 400;
+      float: left;
+      border-radius: 2px; }
+    .room-wrapper .room-header-wrapper .status-waiting {
+      border: 1px solid #2C3D73;
+      color: #2C3D73; }
+    .room-wrapper .room-header-wrapper .status-in-game {
+      border: 1px solid #767676;
+      color: #767676; }
+    .room-wrapper .room-header-wrapper .room-title-wrapper {
+      margin-left: 8px;
+      float: left;
+      width: calc(100% - 72px);
+      font-size: 20px;
+      line-height: 25px;
+      font-weight: 400;
+      /* 말줄임표! */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .room-wrapper .room-header-wrapper:after {
+      content: "";
+      display: block;
+      clear: both; }
+  .room-wrapper .room-player-wrapper {
+    position: absolute;
+    font-size: 15px;
+    left: 20px;
+    bottom: 16px; }
+  .room-wrapper .room-button {
+    position: absolute;
+    right: 16px;
+    bottom: 15px;
+    width: 64px;
+    height: 30px;
+    font-weight: 400;
+    font-size: 15px;
+    border-radius: 4px; }
+
+#new-room-button {
+  width: calc(100% - 6px);
+  height: 60px;
+  margin-top: 30px;
+  border: 3px solid;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 60px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  color: #2C3D73; }
+  #new-room-button:active {
+    background-color: #F5FAFF; }
+
+/*# sourceMappingURL=room.css.map */

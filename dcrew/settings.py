@@ -142,7 +142,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "playground/static"),
+    os.path.join(BASE_DIR, "dcrew/static"),
+    os.path.join(BASE_DIR, "room/static"),
+    os.path.join(BASE_DIR, "account/static"),
 ]
 
 # 로그인 관련

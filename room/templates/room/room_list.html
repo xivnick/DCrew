@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block title %}대기실 :: {% endblock title %}
+
+{% load static %}
+
+{% block top %}대기실{% endblock top %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'room/css/room.css' %}">
+{% endblock css %}
+
+{% block content %}
+    {% for room in rooms %}
+        <div class="room-wrapper">
+            <div class="room-header-wrapper">
+                {% if room.get_status_display == "Waiting" %}
+                    <div class="room-status-wrapper status-waiting">대기중</div>
+                {% else %}
+                    <div class="room-status-wrapper status-in-game">게임중</div>
+                {% endif %}
+                <div class="room-title-wrapper">{{ room.title }}</div>
+            </div>
+            <div class="room-player-wrapper">{{ room.host_name }} - 1 / 5</div>
+            {% if room.get_status_display == "Waiting" %}
+                <button class="room-button primary-color">입장</button>
+            {% else %}
+                <button class="room-button primary-color">관전</button>
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% if empty %}
+        <div class="text-center">
+            방이 없어요..
+        </div>
+
+    {% endif %}
+    <div id="new-room-button" onclick="location.href='{% url 'room_create' %}'" >
+        새로운 방 만들기
+    </div>
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}

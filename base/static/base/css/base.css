@@ -33,6 +33,10 @@ body {
   background-color: #2C3D73;
   color: white; }
 
+.primary-light-color {
+  background-color: #7283A6;
+  color: black; }
+
 .text-center {
   text-align: center; }
 
@@ -62,13 +66,12 @@ header #user-button-wrapper {
     border-bottom: 1px solid #767676; }
   #body-wrapper #content-wrapper {
     margin-top: 24px; }
+  #body-wrapper #content-wrapper {
+    padding: 40px 15px;
+    border: 1px solid #767676;
+    border-radius: 2px; }
 
 /* other css */
-.default-wrapper {
-  padding: 40px 15px;
-  border: 1px solid #767676;
-  border-radius: 2px; }
-
 input {
   width: calc(100% - 20px - 2px);
   height: 36px;
