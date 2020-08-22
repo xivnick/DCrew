@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}방 만들 :: {% endblock title %}
+
+{% block css %}
+    <link rel="styleshee기t" type="text/css" href="{% static 'room/css/room.css' %}?{{ ver }}"/>
+{% endblock css %}
+
+{% block top %}방 만들기{% endblock top %}
+
+{% block content %}
+<div class="content-back-small">
+    <form id="room-form" method="POST" action="{% url 'room_create' %}">
+        {% csrf_token %}
+        {{ form.title }}
+        {{ form.capacity }}
+        <button class="primary-color register-button">방 만들기</button>
+    </form>
+</div>
+{% endblock content %}
