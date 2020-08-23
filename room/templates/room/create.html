@@ -2,11 +2,15 @@
 
 {% load static %}
 
-{% block title %}방 만들 :: {% endblock title %}
+{% block title %}방 만들기 :: {% endblock title %}
 
 {% block css %}
-    <link rel="styleshee기t" type="text/css" href="{% static 'room/css/room.css' %}?{{ ver }}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'room/css/room.css' %}?{{ ver }}"/>
 {% endblock css %}
+
+{% block nav %}
+    <a class="text-button" href="{% url 'room_list' %}">대기실</a>
+{% endblock nav %}
 
 {% block top %}방 만들기{% endblock top %}
 

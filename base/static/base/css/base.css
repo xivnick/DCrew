@@ -60,6 +60,13 @@ header #user-button-wrapper {
   header #user-button-wrapper .text-button {
     margin-left: 5px;
     color: white; }
+header #nav {
+  font-size: 14px;
+  line-height: 32px;
+  float: left;
+  margin-left: 20px; }
+  header #nav a {
+    color: white; }
 
 /* body css */
 #body-wrapper {

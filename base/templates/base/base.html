@@ -23,6 +23,10 @@
 <body>
     <header>
         <div id="header-back" class="primary-color">
+            <div id="nav">
+                {% block nav %}
+                {% endblock nav %}
+            </div>
             {# uesr button #}
             <div id="user-button-wrapper">
                 {% if user.is_authenticated %}

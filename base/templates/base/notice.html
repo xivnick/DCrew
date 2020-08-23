@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+
+{% block title %}공지사항 :: {% endblock title %}
+
+{% load static %}
+
+{% block nav %}
+    <a class="text-button" href="{% url 'room_list' %}">대기실</a>
+{% endblock nav %}
+
+{% block top %}공지사항{% endblock top %}
+
+{% block content %}
+    {{ notice }}
+{% endblock content %}

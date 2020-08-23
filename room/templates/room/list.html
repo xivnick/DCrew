@@ -4,11 +4,15 @@
 
 {% load static %}
 
-{% block top %}대기실{% endblock top %}
-
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'room/css/room.css' %}?{{ ver }}">
 {% endblock css %}
+
+{% block nav %}
+    <a class="text-button" href="{% url 'notice' %}">공지사항</a>
+{% endblock nav %}
+
+{% block top %}대기실{% endblock top %}
 
 {% block content %}
     {% for room in rooms %}
