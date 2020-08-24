@@ -17,7 +17,6 @@ class Room(models.Model):
     )
 
     id = models.IntegerField(primary_key=True)
-    hostId = models.IntegerField()
     title = models.CharField(max_length=255, unique=True)
     capacity = models.IntegerField(
         choices=CAPACITY_CHOICES,
@@ -33,11 +32,21 @@ class Room(models.Model):
         return self.title
 
 
-class RoomPlayer(models.Model):
+class RoomUser(models.Model):
+
+    TYPE_CHOICES = (
+        ('H', 'Host'),
+        ('P', 'Player'),
+        ('O', 'Observer'),
+    )
 
     id = models.AutoField(primary_key=True)
     roomId = models.IntegerField()
-    playerId = models.IntegerField()
+    userId = models.IntegerField()
+    type = models.CharField(
+        max_length=1,
+        choices=TYPE_CHOICES,
+    )
 
     def __str__(self):
-        return '(' + str(self.roomId) + ', ' + str(self.playerId) + ')'
+        return '(' + str(self.roomId) + ', ' + str(self.userId) + ')'

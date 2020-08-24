@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.db.models import Subquery, OuterRef
-from .models import Room
+from django.db.models import Subquery, OuterRef, Count
+from .models import Room, RoomUser
 from django.contrib.auth.models import User
 from .forms import CreateRoomForm
 
@@ -9,8 +9,21 @@ from .forms import CreateRoomForm
 def room_list(req):
 
     # 방 목록 가져오기 / 게임 중인 방은 아래
-    host_name = User.objects.filter(id=1).values('first_name')[:1]
-    rooms = Room.objects.all().annotate(host_name=Subquery(host_name)).order_by('-status')
+    rooms = Room.objects.all().order_by('-status').values()
+
+    host_name = User.objects.filter(id=OuterRef('userId')).values('first_name')
+    room_host_names = RoomUser.objects.filter(type='H').annotate(
+        hostName=Subquery(host_name)
+    ).values('roomId', 'hostName')
+    room_player_nums = RoomUser.objects.all().values('roomId').annotate(playerNum=Count('roomId'))
+
+    room_host_names = {rhn['roomId']: rhn['hostName'] for rhn in room_host_names}
+    room_player_nums = {rpn['roomId']: rpn['playerNum'] for rpn in room_player_nums}
+    rooms = [{
+        **room,
+        'host_name': room_host_names[room['id']],
+        'player_num': room_player_nums[room['id']],
+    } for room in rooms]
 
     if len(rooms) > 0:
         return render(req, 'room/list.html', {'rooms': rooms})
@@ -27,8 +40,7 @@ def room_create(req):
         if create_room_form.is_valid():
             room_instance = create_room_form.save(commit=False)
 
-            room_instance.hostId = req.user.id
-
+            # find empty room id
             rooms = Room.objects.all().values('id').order_by('id')
 
             new_id = 1
@@ -40,7 +52,17 @@ def room_create(req):
 
             room_instance.id = new_id
 
+            # save room
             room_instance.save()
+
+            # make room player
+            room_player = RoomUser()
+            room_player.roomId = room_instance.id
+            room_player.userId = req.user.id
+            room_player.type = 'H'
+
+            # save room player
+            room_player.save()
 
             # 방이 제대로 만들어졌다면
             return redirect('room_list')
