@@ -51,7 +51,7 @@ def room_create(req):
                     break
 
             room_instance.id = new_id
-            room_instance.host_id = req.user.id
+            room_instance.hostId = req.user.id
 
             # save room
             room_instance.save()
