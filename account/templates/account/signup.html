@@ -11,7 +11,7 @@
 {% block top %}회원가입{% endblock top %}
 
 {% block content %}
-    <form id="account-form" method="POST" action="{% url 'account_signup' %}?{{ ver }}">
+    <form id="account-form" method="POST" action="{% url 'account_signup' %}">
         {% csrf_token %}
         {{ form.username }}
         {% if form.username.errors %}
