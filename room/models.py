@@ -29,6 +29,7 @@ class RoomUser(models.Model):
     roomId = models.IntegerField()
     userId = models.IntegerField()
     seat = models.IntegerField(default=0)
+    connect = models.BooleanField(default=True)
 
     def __str__(self):
         return '(' + str(self.roomId) + ', ' + str(self.userId) + ')'
