@@ -13,7 +13,7 @@ class LoginForm(forms.ModelForm):
         widgets = {
             'username': forms.TextInput(attrs={
                 'placeholder': '아이디',
-                'class': 'first',
+                'class': 'no-margin',
             }),
             'password': forms.PasswordInput(attrs={
                 'placeholder': '비밀번호',
@@ -40,7 +40,7 @@ class SignUpForm(forms.ModelForm):
         widgets = {
             'username': forms.TextInput(attrs={
                 'placeholder': '아이디',
-                'class': 'first',
+                'class': 'no-margin',
             }),
             'password': forms.PasswordInput(attrs={
                 'placeholder': '비밀번호',

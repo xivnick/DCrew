@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ room.title }} :: {% endblock title %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'room/css/room.css' %}?{{ ver }}">
+{% endblock css %}
+
+{% block nav %}
+    <a class="text-button" href="{% url 'room_list' %}">대기실</a>
+{% endblock nav %}
+
+{% block top %}{{ room.title }}{% endblock top %}
+
+{% block content %}
+    <form id="game-form" method="POST" action="#">
+        {% csrf_token %}
+        {{ form.mode }}
+        <div id="stage-wrapper" v-if="mode === 'C'">
+            <input type="text" id="stage-input" :value="'Stage '+stage" style="color: black;" disabled>
+            <input type="range" v-model="stage" id="stage-slider" min="1" max="50">
+        </div>
+        <div id="stage-wrapper" v-else>
+            <input type="hidden" id="stage-slider" value="1" min="1" max="50">
+        </div>
+        <button class="primary-color register-button">게임 시작</button>
+    </form>
+    <div class="divider"></div>
+    <div v-for="player in players" class="player-wrapper">
+    </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    const content = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#content-wrapper',
+        data: {
+            players: [],
+            stage: 1,
+            mode: '',
+        },
+        mounted: function () {
+            console.log('mounted');
+            this.update();
+        },
+        methods: {
+            update () {
+                console.log('p:',this.players);
+                this.players=[1,2,3,4,5];
+            },
+        }
+    })
+</script>
+{% endblock script %}

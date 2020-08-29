@@ -15,12 +15,10 @@
 {% block top %}방 만들기{% endblock top %}
 
 {% block content %}
-<div class="content-back-small">
     <form id="room-form" method="POST" action="{% url 'room_create' %}">
         {% csrf_token %}
         {{ form.title }}
         {{ form.capacity }}
         <button class="primary-color register-button">방 만들기</button>
     </form>
-</div>
 {% endblock content %}

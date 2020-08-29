@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'account',
     'base',
     'room',
+    'game',
 ]
 
 MIDDLEWARE = [
