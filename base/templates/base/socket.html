@@ -1,8 +1,10 @@
 
-{% with socket_url='http://127.0.0.1:3000' %}
+{% load static %}
 
-<script src="{{ socket_url }}/socket.io/socket.io.js"></script>
+<script src="{% static 'dcrew/js/socket.io.js' %}"></script>
 <script type="application/javascript">
+
+    const socket_url = location.protocol + '//' + location.hostname + ':3000';
 
     const room_id = {% if room.id %}{{ room.id }}{% else %}0{% endif %};
     const user_id = {% if user.is_authenticated %}{{ user.id }}{% else %}0{% endif %};
@@ -16,7 +18,7 @@
     console.log('uid: ', user_id);
     console.log('uname: ', user_name);
 
-    const socket = io.connect('{{ socket_url }}', { transports: ['websocket'] });
+    const socket = io.connect(socket_url, { transports: ['websocket'] });
 
     const socket_send = (chat) => {
         socket.emit('chat', chat);
@@ -45,5 +47,3 @@
         console.log(`system: ${name}님이 떠났어요..`);
     })
 </script>
-
-{% endwith %}
