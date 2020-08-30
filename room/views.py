@@ -50,17 +50,9 @@ def room_create(req):
             # save room
             room_instance.save()
 
-            # make room player
-            room_player = RoomUser()
-            room_player.room = room_instance
-            room_player.user = req.user
-            room_player.seat = 1
-
-            # save room player
-            room_player.save()
-
-            # 방이 제대로 만들어졌다면
-            return redirect('room', room_id=room_instance.id)
+            if room_instance is not None:
+                # 방이 제대로 만들어졌다면
+                return redirect('room', room_id=room_instance.id)
 
     else:
         create_room_form = CreateRoomForm()
@@ -96,16 +88,13 @@ def room_user_update(req):
 def room(req, room_id):
 
     # get data
-    room = Room.objects.filter(id=room_id).values()[0]
-    room_users = RoomUser.objects.filter(room__id=room_id).values()
+    room = Room.objects.filter(id=room_id)[0]
+    room_users = RoomUser.objects.filter(room__id=room_id)
 
     print(room)
 
     # check user in room
-    user_id = req.user.id
-    room_user_ids = (ru['user__id'] for ru in room_users)
-
-    if user_id not in room_user_ids:
+    if req.user.id not in (ru.user.id for ru in room_users):
         # push user into room
 
         # make room player
@@ -114,9 +103,9 @@ def room(req, room_id):
         room_user.user = req.user
 
         # if waiting, get smallest seat
-        if room['game__id'] is None:
-            room_seats = (ru['seat'] for ru in room_users if ru['seat'] > 0)
-            for seat in range(1, room['capacity'] + 1):
+        if room.game is None:
+            room_seats = (ru.seat for ru in room_users if ru.seat > 0)
+            for seat in range(1, room.capacity + 1):
                 if seat not in room_seats:
                     room_user.seat = seat
                     break

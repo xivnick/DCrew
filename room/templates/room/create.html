@@ -18,6 +18,9 @@
     <form id="room-form" method="POST" action="{% url 'room_create' %}">
         {% csrf_token %}
         {{ form.title }}
+        {% if form.title.errors %}
+            <span class="error-message">이미 존재하는 방입니다.</span>
+        {% endif %}
         {{ form.capacity }}
         <button class="primary-color register-button">방 만들기</button>
     </form>

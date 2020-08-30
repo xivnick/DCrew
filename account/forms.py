@@ -27,6 +27,7 @@ class SignUpForm(forms.ModelForm):
         label='password2',
         widget=forms.PasswordInput(attrs={
             'placeholder': '비밀번호 확인',
+            'class': 'no-margin',
         })
     )
 
