@@ -47,6 +47,7 @@ DEBUG = get_secret('DEBUG')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '61.82.140.213', '158.247.202.146']
 
+SOCKET_URL = 'http://127.0.0.1:3000'
 
 # Application definition
 

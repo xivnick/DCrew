@@ -4,6 +4,9 @@ from .models import Room, RoomUser
 from .forms import CreateRoomForm
 from game.forms import CreateGameForm
 
+from dcrew.settings import SOCKET_URL
+import requests
+
 
 # Create your views here.
 def room_list(req):
@@ -35,8 +38,8 @@ def room_create(req):
             # save room
             room_instance.save()
 
+            # 방이 제대로 만들어졌다면
             if room_instance is not None:
-                # 방이 제대로 만들어졌다면
                 return redirect('room', room_id=room_instance.id)
 
     else:
@@ -70,6 +73,11 @@ def room(req, room_id):
 
         # save room player
         room_user.save()
+
+        requests.post(SOCKET_URL + '/game/update', data={
+            'room': 0,
+            'target': 'all'
+        })
 
     create_game_form = CreateGameForm()
 

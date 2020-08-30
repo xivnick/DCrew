@@ -38,6 +38,9 @@
 {% endblock content %}
 
 {% block script %}
+
+{% include 'base/socket.html' %}
+
 <script>
     const content = new Vue({
         delimiters: ['[[', ']]'],

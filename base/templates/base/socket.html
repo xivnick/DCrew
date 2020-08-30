@@ -1,0 +1,49 @@
+
+{% with socket_url='http://127.0.0.1:3000' %}
+
+<script src="{{ socket_url }}/socket.io/socket.io.js"></script>
+<script type="application/javascript">
+
+    const room_id = {% if room.id %}{{ room.id }}{% else %}0{% endif %};
+    const user_id = {% if user.is_authenticated %}{{ user.id }}{% else %}0{% endif %};
+    {% if user.is_authenticated %}
+        const user_name = '{{ user.first_name }}';
+    {% else %}
+        const user_name = '익명' + (Math.floor(Math.random()*8999) + 1000).toString();
+    {% endif %}
+
+    console.log('rid: ', room_id);
+    console.log('uid: ', user_id);
+    console.log('uname: ', user_name);
+
+    const socket = io.connect('{{ socket_url }}', { transports: ['websocket'] });
+
+    const socket_send = (chat) => {
+        socket.emit('chat', chat);
+    }
+
+    // socket listeners
+    socket.on('connection', () => {
+        socket.emit('join', user_id, user_name, room_id);
+    })
+    socket.on('chat', (name, msg) => {
+        console.log(`${name}: ${msg}`);
+    });
+    socket.on('join', (name) => {
+        console.log(`system: ${name}님이 입장했어요!`);
+    });
+    socket.on('update', (target) => {
+        content.update(target);
+        console.log('updated called: ', target);
+    });
+    socket.on('disconnect', (err, name) => {
+        if(err) {
+            console.log(err);
+            console.log('system: 재접속되었습니다.')
+            return;
+        }
+        console.log(`system: ${name}님이 떠났어요..`);
+    })
+</script>
+
+{% endwith %}
