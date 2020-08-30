@@ -15,34 +15,55 @@
 {% block top %}대기실{% endblock top %}
 
 {% block content %}
-    {% for room in rooms %}
-        <div class="room-wrapper">
-            <div class="room-header-wrapper">
-                {% if room.game__id is None %}
-                    <div class="room-status-wrapper status-waiting">대기중</div>
-                {% else %}
-                    <div class="room-status-wrapper status-in-game">게임중</div>
-                {% endif %}
-                <div class="room-title-wrapper">{{ room.title }}</div>
-            </div>
-            <div class="room-player-wrapper">{{ room.host.first_name }} - {{ room.playerNum }} / {{ room.capacity }}</div>
-            {% if room.game__id is None %}
-                <button onclick="location.href='{% url 'room' room_id=room.id %}'" class="room-button primary-color">입장</button>
-            {% else %}
-                <button onclick="location.href='{% url 'room' room_id=room.id %}'"  class="room-button primary-light-color">관전</button>
-            {% endif %}
+    <div v-if="rooms.length === 0" class="text-center">
+        방이 없어요..
+    </div>
+    <div v-for="room in rooms" class="room-wrapper">
+        <div class="room-header-wrapper">
+            <div v-if="room.game_id" class="room-status-wrapper status-in-game">게임중</div>
+            <div v-else class="room-status-wrapper status-waiting">대기중</div>
+            <div class="room-title-wrapper">[[ room.title ]]</div>
         </div>
-    {% endfor %}
-    {% if empty %}
-        <div class="text-center">
-            방이 없어요..
-        </div>
-
-    {% endif %}
+        <div class="room-player-wrapper">[[ room.host_name ]] - [[ room.player_num ]] / [[ room.capacity ]]</div>
+        <button v-if="room.game_id" v-on:click="link(room.room_url)"
+                class="room-button primary-light-color"
+        >관전</button>
+        <button v-else v-on:click="link(room.room_url)"
+                class="room-button primary-color"
+        >입장</button>
+    </div>
     <div id="new-room-button" onclick="location.href='{% url 'room_create' %}'" >
         새로운 방 만들기
     </div>
 {% endblock content %}
 
 {% block script %}
+<script>
+    const content = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#content-wrapper',
+        data: {
+            rooms: [],
+        },
+        mounted: function () {
+            console.log('mounted');
+            this.update('all');
+        },
+        methods: {
+            update (target) {
+                console.log('update');
+                axios.get('/api/room/list')
+                    .then((res) => {
+                        this.rooms = res.data.rooms;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            },
+            link (url) {
+                location.href=url;
+            }
+        }
+    });
+</script>
 {% endblock script %}

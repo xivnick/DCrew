@@ -1,9 +1,33 @@
+from django.shortcuts import resolve_url
 from django.db.models import Subquery, OuterRef, Count
 from .models import Room, RoomUser
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from dcrew.settings import get_secret
 import json
+
+
+def room_list(req):
+
+    # 방 목록 가져오기 / 게임 중인 방은 아래
+    room_player_num = RoomUser.objects.filter(
+        seat__gt=0, room__id=OuterRef('id')
+    ).values('room__id').annotate(playerNum=Count('room__id')).values('playerNum')
+    rooms = Room.objects.select_related('host').annotate(
+        playerNum=Subquery(room_player_num)
+    ).order_by('game__id')
+
+    rooms = [{
+        'id': room.id,
+        'title': room.title,
+        'capacity': room.capacity,
+        'host_name': room.host.first_name,
+        'game_id': room.game_id,
+        'player_num': room.playerNum,
+        'room_url': resolve_url('room', room_id=room.id),
+    } for room in rooms]
+
+    return JsonResponse({'rooms': rooms})
 
 
 @csrf_exempt
@@ -31,4 +55,4 @@ def room_user_update(req):
 
         return JsonResponse({'message': 'success', 'result': result})
 
-    return JsonResponse(status=404)
+    return JsonResponse({}, status=404)

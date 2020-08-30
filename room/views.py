@@ -61,8 +61,6 @@ def room(req, room_id):
     room = Room.objects.filter(id=room_id)[0]
     room_users = RoomUser.objects.filter(room__id=room_id)
 
-    print(room)
-
     # check user in room
     if req.user.id not in (ru.user.id for ru in room_users):
         # push user into room
