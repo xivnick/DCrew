@@ -4,7 +4,7 @@
 <script src="{% static 'dcrew/js/socket.io.js' %}"></script>
 <script type="application/javascript">
 
-    const socket_url = location.protocol + '//' + location.hostname + ':3000';
+    const socket_url = 'http://' + location.hostname + ':3000';
 
     const room_id = {% if room.id %}{{ room.id }}{% else %}0{% endif %};
     const user_id = {% if user.is_authenticated %}{{ user.id }}{% else %}0{% endif %};
