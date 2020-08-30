@@ -8,17 +8,7 @@ from game.forms import CreateGameForm
 # Create your views here.
 def room_list(req):
 
-    # 방 목록 가져오기 / 게임 중인 방은 아래
-    room_player_num = RoomUser.objects.filter(
-        seat__gt=0, room__id=OuterRef('id')
-    ).values('room__id').annotate(playerNum=Count('room__id')).values('playerNum')
-    rooms = Room.objects.select_related('host').annotate(playerNum=Subquery(room_player_num)).order_by('game__id')
-
-    if len(rooms) > 0:
-        return render(req, 'room/list.html', {'rooms': rooms})
-
-    else:
-        return render(req, 'room/list.html', {'empty': True})
+    return render(req, 'room/list.html')
 
 
 def room_create(req):
