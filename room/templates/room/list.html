@@ -18,15 +18,15 @@
     {% for room in rooms %}
         <div class="room-wrapper">
             <div class="room-header-wrapper">
-                {% if room.gameId is None %}
+                {% if room.game__id is None %}
                     <div class="room-status-wrapper status-waiting">대기중</div>
                 {% else %}
                     <div class="room-status-wrapper status-in-game">게임중</div>
                 {% endif %}
                 <div class="room-title-wrapper">{{ room.title }}</div>
             </div>
-            <div class="room-player-wrapper">{{ room.hostName }} - {{ room.playerNum }} / {{ room.capacity }}</div>
-            {% if room.gameId is None %}
+            <div class="room-player-wrapper">{{ room.host.first_name }} - {{ room.playerNum }} / {{ room.capacity }}</div>
+            {% if room.game__id is None %}
                 <button onclick="location.href='{% url 'room' room_id=room.id %}'" class="room-button primary-color">입장</button>
             {% else %}
                 <button onclick="location.href='{% url 'room' room_id=room.id %}'"  class="room-button primary-light-color">관전</button>
