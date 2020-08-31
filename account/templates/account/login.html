@@ -18,6 +18,7 @@
 {% block content %}
     <form id="account-form" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
         {{ form.username }}
         {% if failed and not form.username.errors %}
             <span class="error-message">존재하지 않는 아이디입니다.</span>
@@ -28,7 +29,7 @@
         {% endif %}
         <button class="primary-color register-button">로그인</button>
         <div id="hagi-text" class="text-center">
-            계정이 없으신가요? <a class="text-button" href="{% url 'account_signup' %}">가입하기</a>
+            계정이 없으신가요? <a class="text-button" href="{% url 'account_signup' %}?next={{ next }}">가입하기</a>
         </div>
     </form>
 {% endblock content %}

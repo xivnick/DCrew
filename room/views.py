@@ -7,6 +7,8 @@ from game.forms import CreateGameForm
 from dcrew.settings import SOCKET_URL
 import requests
 
+from account.views import login_redirect
+
 
 # Create your views here.
 def room_list(req):
@@ -15,6 +17,9 @@ def room_list(req):
 
 
 def room_create(req):
+
+    if req.user.is_anonymous:
+        return login_redirect('room_create')
 
     if req.method == 'POST':
         create_room_form = CreateRoomForm(req.POST)
@@ -49,6 +54,9 @@ def room_create(req):
 
 
 def room(req, room_id):
+
+    if req.user.is_anonymous:
+        return login_redirect('room', room_id=room_id)
 
     # get data
     room = Room.objects.filter(id=room_id)[0]
