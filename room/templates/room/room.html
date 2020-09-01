@@ -40,7 +40,25 @@
     <div class="divider"></div>
     <div class="content-top">플레이어</div>
     <div class="players-wrapper">
-        <div v-for="player in players" class="player-wrapper"></div>
+        <div v-for="index in {{ room.capacity }}" class="player-wrapper">
+            <div v-if="index in players">
+                <div v-if="players[index]['connect']" class="player-name">[[ players[index]['name'] ]]</div>
+                <div v-else class="player-name disconnect">[[ players[index]['name'] ]]</div>
+            </div>
+            <div v-else>
+                <div class="player-name">-</div>
+            </div>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="content-top">관전</div>
+    <div id="spectator-wrapper">
+        <div v-for="spectator in spectators" class="spectator-name">
+            [[ spectator.name ]]
+        </div>
+        <div v-if="spectators.length === 0" class="spectator-name">
+            -
+        </div>
     </div>
 {% endblock content %}
 
@@ -51,7 +69,8 @@
         delimiters: ['[[', ']]'],
         el: '#content-wrapper',
         data: {
-            players: [],
+            players: {},
+            spectators: [],
             stage: 1,
             mode: '',
         },
@@ -63,6 +82,30 @@
             update(target) {
                 console.log('p:',this.players);
                 this.players=[1,2,3,4,5];
+                axios.get('/api/room/users', {
+                    params: {
+                        room_id: {{ room.id }},
+                    }
+                })
+                    .then((res) => {
+                        console.log(res.data)
+                        const users = res.data.room_users;
+
+                        this.players = {};
+                        this.spectators = [];
+
+                        for(const user of users){
+                            if(user.seat === 0){
+                                this.spectators.push(user);
+                            }
+                            else{
+                                this.players[user.seat] = user;
+                            }
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             },
             updateSetting(setting) {
                 this.mode = setting.mode;

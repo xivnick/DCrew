@@ -86,5 +86,29 @@
   border-radius: 4px; }
   .player-wrapper:first-of-type {
     margin-top: 0; }
+  .player-wrapper .player-name {
+    position: absolute;
+    font-size: 16px;
+    font-weight: 400;
+    left: 20px;
+    top: 15px; }
+  .player-wrapper .disconnect {
+    color: #767676; }
+
+#spectator-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: #F5FAFF;
+  border: 1px solid #767676;
+  border-radius: 4px;
+  padding: 15px 20px 15px 10px; }
+  #spectator-wrapper .spectator-name {
+    float: left;
+    font-size: 16px;
+    margin-left: 10px; }
+  #spectator-wrapper::after {
+    clear: both;
+    content: "";
+    display: block; }
 
 /*# sourceMappingURL=room.css.map */

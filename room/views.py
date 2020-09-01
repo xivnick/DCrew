@@ -55,11 +55,16 @@ def room_create(req):
 
 def room(req, room_id):
 
+    # check user login
     if req.user.is_anonymous:
         return login_redirect('room', room_id=room_id)
 
-    # get data
-    room = Room.objects.filter(id=room_id)[0]
+    # check there is room with roomid
+    rooms = Room.objects.filter(id=room_id)
+    if len(rooms) == 0: return redirect('room_list')
+
+    # get room data
+    room = rooms[0]
     room_users = RoomUser.objects.filter(room__id=room_id)
 
     # check user in room
