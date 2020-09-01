@@ -42,8 +42,7 @@
     <div class="players-wrapper">
         <div v-for="index in {{ room.capacity }}" class="player-wrapper">
             <div v-if="index in players">
-                <div v-if="players[index]['connect']" class="player-name">[[ players[index]['name'] ]]</div>
-                <div v-else class="player-name disconnect">[[ players[index]['name'] ]]</div>
+                <div class="player-name" :class="players[index].connect?'':'disconnect'">[[ players[index]['name'] ]]</div>
             </div>
             <div v-else>
                 <div class="player-name">-</div>
@@ -53,7 +52,7 @@
     <div class="divider"></div>
     <div class="content-top">관전</div>
     <div id="spectator-wrapper">
-        <div v-for="spectator in spectators" class="spectator-name">
+        <div v-for="spectator in spectators" class="spectator-name" :class="spectator.connect?'':'disconnect'">
             [[ spectator.name ]]
         </div>
         <div v-if="spectators.length === 0" class="spectator-name">

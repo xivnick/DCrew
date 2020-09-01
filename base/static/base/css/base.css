@@ -21,10 +21,12 @@ select {
   /* 네이티브 외형 감추기 */
   -moz-appearance: none;
   appearance: none;
-  background: url("http://cdn.onlinewebfonts.com/svg/img_295694.svg") no-repeat 95% center/16px; }
+  background: url("http://cdn.onlinewebfonts.com/svg/img_295694.svg") no-repeat 95% center/16px;
+  font: inherit; }
 
 body {
-  margin: 0; }
+  margin: 0;
+  line-height: 1; }
 
 /* box sizing option */
 * {
@@ -44,6 +46,10 @@ body {
 
 .primary-light-color {
   background-color: #7283A6;
+  color: white; }
+
+.error-color {
+  background-color: #D9753B;
   color: white; }
 
 .text-center {

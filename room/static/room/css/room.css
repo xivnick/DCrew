@@ -76,6 +76,9 @@
   #new-room-button:active {
     background-color: #F5FAFF; }
 
+.disconnect {
+  color: #767676; }
+
 .player-wrapper {
   position: relative;
   width: 100%;
@@ -92,8 +95,6 @@
     font-weight: 400;
     left: 20px;
     top: 15px; }
-  .player-wrapper .disconnect {
-    color: #767676; }
 
 #spectator-wrapper {
   position: relative;

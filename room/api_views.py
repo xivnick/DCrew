@@ -33,6 +33,22 @@ def room_list(req):
     return JsonResponse({'rooms': rooms})
 
 
+def room_my_rooms(req):
+
+    params = ['user_id']
+    for param in params:
+        if param not in req.GET:
+            return JsonResponse({'message': 'need param \'' + param + '\''}, status=422)
+
+    user_id = req.GET['user_id']
+
+    room_users = RoomUser.objects.filter(user_id=user_id)
+
+    rooms = [ru.room_id for ru in room_users]
+
+    return JsonResponse({'rooms': rooms})
+
+
 def room_users(req):
 
     params = ['room_id']

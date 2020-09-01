@@ -25,7 +25,10 @@
             <div class="room-title-wrapper">[[ room.title ]]</div>
         </div>
         <div class="room-player-wrapper">[[ room.host_name ]] - [[ room.player_num ]] / [[ room.capacity ]]</div>
-        <button v-if="room.game_id || room.player_num === room.capacity" v-on:click="link(room.room_url)"
+        <button v-if="myRooms.includes(room.id)" v-on:click="link(room.room_url)"
+                class="room-button primary-color"
+        >재입장</button>
+        <button v-else-if="room.game_id || room.player_num === room.capacity" v-on:click="link(room.room_url)"
                 class="room-button primary-light-color"
         >관전</button>
         <button v-else v-on:click="link(room.room_url)"
@@ -47,6 +50,7 @@
         el: '#content-wrapper',
         data: {
             rooms: [],
+            myRooms: [],
         },
         mounted: function () {
             console.log('mounted');
@@ -54,14 +58,27 @@
         },
         methods: {
             update (target) {
-                console.log('update');
-                axios.get('/api/room/list')
-                    .then((res) => {
-                        this.rooms = res.data.rooms;
+                console.log('update ', target);
+
+                if(target === 'all' ||  target === 'room_list'){
+                    axios.get('/api/room/list')
+                        .then((res) => {
+                            this.rooms = res.data.rooms;
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                }
+                if(target === 'all' || target === 'my_rooms'){
+                    axios.get('/api/room/my_rooms', {
+                        params: {
+                            user_id: {% if user.is_authenticated %}{{ user.id }}{% else %}0{% endif %},
+                        }
+                    }). then((res) => {
+                        this.myRooms = res.data.rooms;
                     })
-                    .catch((err) => {
-                        console.log(err);
-                    })
+                }
+
             },
             link (url) {
                 location.href=url;
