@@ -19,7 +19,7 @@
         {% csrf_token %}
         {{ form.mode }}
         <div id="stage-wrapper" v-if="mode === 'C'">
-            <input type="text" id="stage-input" :value="'Stage '+stage" style="color: black;" disabled>
+            <div class="pseudo-input" v-html="'Stage '+stage"></div>
             <input type="range" v-model="stage" id="stage-slider" min="1" max="50">
         </div>
         <div id="stage-wrapper" v-else>

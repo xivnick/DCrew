@@ -12,6 +12,7 @@ button:focus, select:focus, input:focus {
   outline: none; }
 
 input {
+  font-size: inherit;
   padding: 0;
   box-shadow: none; }
 
@@ -22,18 +23,20 @@ select {
   appearance: none;
   background: url("http://cdn.onlinewebfonts.com/svg/img_295694.svg") no-repeat 95% center/16px; }
 
-input, select {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box; }
-
 body {
   margin: 0; }
+
+/* box sizing option */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 /* default css */
 body {
   font-family: '본고딕', 'Noto Sans KR', sans-serif;
-  font-weight: 300; }
+  font-weight: 300;
+  font-size: 14px; }
 
 .primary-color {
   background-color: #2C3D73;
@@ -70,7 +73,7 @@ header #nav {
 
 /* body css */
 #body-wrapper {
-  padding: 30px 20px 0; }
+  padding: 30px 20px 20px; }
   #body-wrapper #top-wrapper {
     height: 50px;
     font-size: 24px;
@@ -84,21 +87,24 @@ header #nav {
     border: 1px solid #767676;
     border-radius: 2px; }
 
+/* footer css */
+#footer {
+  border-top: 1px solid #767676;
+  padding: 20px; }
+
 /* other css */
-input, select {
+input, select, .pseudo-input {
   width: 100%;
   height: 36px;
-  line-height: 34px;
+  line-height: 32px;
+  font-weight: 400;
   margin-top: 20px;
   padding: 0 16px;
   border: 1px solid #767676;
   border-radius: 4px;
   background-color: #F5FAFF; }
-  input.no-margin, select.no-margin {
+  input.no-margin, select.no-margin, .pseudo-input.no-margin {
     margin-top: 0; }
-
-select {
-  line-height: 36px; }
 
 .register-button {
   width: 100%;
@@ -117,7 +123,8 @@ select {
   margin-top: 5px;
   padding-left: 5px;
   font-size: 12px;
-  color: #D9753B; }
+  color: #D9753B;
+  display: block; }
 
 .divider {
   width: 100%;
