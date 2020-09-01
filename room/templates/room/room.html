@@ -12,7 +12,10 @@
     <a class="text-button" href="{% url 'room_list' %}">대기실</a>
 {% endblock nav %}
 
-{% block top %}{{ room.title }}{% endblock top %}
+{% block top %}
+    {{ room.title }}
+    <a id="exit-button" class="text-button" href="{% url 'room_exit' room_id=room.id %}">나가기</a>
+{% endblock top %}
 
 {% block content %}
     <div class="content-top">게임 설정</div>

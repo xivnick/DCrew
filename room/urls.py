@@ -5,4 +5,5 @@ urlpatterns = [
     path('list/', views.room_list, name='room_list'),
     path('create/', views.room_create, name='room_create'),
     path('<int:room_id>/', views.room, name='room'),
+    path('<int:room_id>/exit/', views.room_exit, name='room_exit'),
 ]

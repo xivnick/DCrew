@@ -17,7 +17,7 @@
     .room-wrapper .room-header-wrapper .room-status-wrapper {
       width: 48px;
       height: 25px;
-      line-height: 25px;
+      line-height: 23px;
       text-align: center;
       font-size: 12px;
       font-weight: 400;
@@ -75,6 +75,13 @@
   color: #2C3D73; }
   #new-room-button:active {
     background-color: #F5FAFF; }
+
+#exit-button {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  line-height: 1;
+  font-size: 14px; }
 
 .disconnect {
   color: #767676; }

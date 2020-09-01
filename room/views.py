@@ -53,6 +53,26 @@ def room_create(req):
     return render(req, 'room/create.html', {'form': create_room_form})
 
 
+def room_exit(req, room_id):
+    if req.user.is_anonymous:
+        return redirect('room_list')
+
+    rooms = Room.objects.filter(id=room_id)
+    if len(rooms):
+        room = rooms[0]
+
+        if room.host == req.user:
+            room.delete()
+
+        else:
+            room_users = RoomUser.objects.filter(room__id=room_id, user__id=req.user.id)
+            if len(room_users):
+                room_user = room_users[0]
+                room_user.delete()
+
+    return redirect('room_list')
+
+
 def room(req, room_id):
 
     # check user login
