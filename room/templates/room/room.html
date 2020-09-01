@@ -82,6 +82,12 @@
         },
         methods: {
             update(target) {
+
+                if(target === 'reload'){
+                    location.reload();
+                    return;
+                }
+
                 console.log('p:',this.players);
                 this.players=[1,2,3,4,5];
                 axios.get('/api/room/users', {

@@ -64,11 +64,20 @@ def room_exit(req, room_id):
         if room.host == req.user:
             room.delete()
 
+            requests.post(SOCKET_URL + '/room/delete', data={
+                'room': room_id,
+            })
+
         else:
             room_users = RoomUser.objects.filter(room__id=room_id, user__id=req.user.id)
             if len(room_users):
                 room_user = room_users[0]
                 room_user.delete()
+
+                requests.post(SOCKET_URL + '/room/update', data={
+                    'room': room_id,
+                    'target': 'all',
+                })
 
     return redirect('room_list')
 
@@ -109,7 +118,7 @@ def room(req, room_id):
 
         requests.post(SOCKET_URL + '/room/update', data={
             'room': 0,
-            'target': 'all'
+            'target': 'all',
         })
 
     create_game_form = CreateGameForm()
