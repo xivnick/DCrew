@@ -43,8 +43,11 @@ class RoomUser(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    seat = models.IntegerField(null=True, unique=True)
+    seat = models.IntegerField(null=True)
     connect = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('room', 'seat',)
 
     def __str__(self):
         return '(r:"' + str(self.room) + '", u:"' + str(self.user) + '")'

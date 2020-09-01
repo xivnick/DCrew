@@ -108,8 +108,10 @@ def room(req, room_id):
         # if waiting, get smallest seat
         if room.game is None:
             room_seats = (ru.seat for ru in room_users if ru.seat is not None)
+            print(*room_seats)
             for seat in range(1, room.capacity + 1):
                 if seat not in room_seats:
+                    print('seat:', seat)
                     room_user.seat = seat
                     break
 
