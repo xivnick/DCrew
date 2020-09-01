@@ -93,7 +93,7 @@ def room_user_update(req):
         if result == 0:
             return JsonResponse({'message': 'no room user'}, status=400)
 
-        requests.post(SOCKET_URL + '/game/update', data={
+        requests.post(SOCKET_URL + '/room/update', data={
             'room': data['room_id'],
             'target': 'all'
         })

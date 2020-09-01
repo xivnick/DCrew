@@ -87,7 +87,7 @@ def room(req, room_id):
         # save room player
         room_user.save()
 
-        requests.post(SOCKET_URL + '/game/update', data={
+        requests.post(SOCKET_URL + '/room/update', data={
             'room': 0,
             'target': 'all'
         })
