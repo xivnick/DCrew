@@ -15,24 +15,37 @@
 {% block top %}{{ room.title }}{% endblock top %}
 
 {% block content %}
-    <form id="game-form" method="POST" action="#">
-        {% csrf_token %}
-        {{ form.mode }}
-        <div id="stage-wrapper" v-if="mode === 'C'">
-            <div class="pseudo-input" v-html="'Stage '+stage"></div>
-            <input type="range" v-model="stage" id="stage-slider" min="1" max="50">
+    <div class="content-top">게임 설정</div>
+    {% if room.host.id == user.id %}
+        <form id="game-form" method="POST" action="#">
+            {% csrf_token %}
+            {{ form.mode }}
+            <div id="stage-wrapper" v-if="mode === 'C'">
+                <div class="pseudo-input" v-html="'Stage '+stage"></div>
+                <input type="range" v-model="stage" v-on:click="sendSetting" id="stage-slider" min="1" max="50">
+            </div>
+            <div id="stage-wrapper" v-else>
+                <input type="hidden" id="stage-slider" value="1" min="1" max="50">
+            </div>
+            <button class="primary-color register-button">게임 시작</button>
+        </form>
+    {% else %}
+        <div>
+            <div class="pseudo-input no-margin" v-html="showMode()"></div>
+            <div id="stage-wrapper" v-if="mode === 'C'">
+                <div class="pseudo-input" v-html="'Stage '+stage"></div>
+            </div>
         </div>
-        <div id="stage-wrapper" v-else>
-            <input type="hidden" id="stage-slider" value="1" min="1" max="50">
-        </div>
-        <button class="primary-color register-button">게임 시작</button>
-    </form>
+    {% endif %}
     <div class="divider"></div>
-    <div v-for="player in players" class="player-wrapper">
+    <div class="content-top">플레이어</div>
+    <div class="players-wrapper">
+        <div v-for="player in players" class="player-wrapper"></div>
     </div>
 {% endblock content %}
 
 {% block script %}
+{% include 'base/socket.html' %}
 <script>
     const content = new Vue({
         delimiters: ['[[', ']]'],
@@ -47,11 +60,29 @@
             this.update();
         },
         methods: {
-            update () {
+            update(target) {
                 console.log('p:',this.players);
                 this.players=[1,2,3,4,5];
             },
+            updateSetting(setting) {
+                this.mode = setting.mode;
+                this.stage = setting.stage;
+            },
+            sendSetting() {
+                socket.emit('setting', {mode:this.mode, stage:this.stage});
+            },
+            showMode() {
+                if(this.mode === '') return '모드 선택 중';
+                if(this.mode === 'O') return 'Original';
+                if(this.mode === 'C') return 'Casual';
+            },
         }
     });
+
+    socket.on('setting', (name, setting) => {
+        if(name === '{{ room.host.first_name }}'){
+            content.updateSetting(setting);
+        }
+    })
 </script>
 {% endblock script %}

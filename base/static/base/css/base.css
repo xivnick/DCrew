@@ -81,11 +81,13 @@ header #nav {
     text-align: center;
     border-bottom: 1px solid #767676; }
   #body-wrapper #content-wrapper {
-    margin-top: 24px; }
-  #body-wrapper #content-wrapper {
+    margin-top: 24px;
     padding: 40px 15px;
     border: 1px solid #767676;
     border-radius: 2px; }
+    #body-wrapper #content-wrapper .content-top {
+      color: #767676;
+      padding: 0 0 10px 10px; }
 
 /* footer css */
 #footer {
@@ -140,8 +142,9 @@ input[type=range] {
   background: #F5FAFF;
   outline: none;
   padding: 0;
-  margin: 10px 0 0; }
+  margin: 15px 0 0; }
   input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
     appearance: none;
     width: 16px;
     height: 16px;

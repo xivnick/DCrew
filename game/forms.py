@@ -16,15 +16,12 @@ class CreateGameForm(forms.ModelForm):
 
     class Meta:
         model = Game
-        fields = ['mode', 'stage']
+        fields = ['mode']
 
         widgets = {
             'mode': GuideSelect(attrs={
                 'class': 'no-margin',
                 'v-model': "mode",
-            }),
-            'stage': forms.NumberInput(attrs={
-                'min': 1,
-                'max': 50,
+                'v-on:change': "sendSetting",
             }),
         }
