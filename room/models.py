@@ -43,7 +43,7 @@ class RoomUser(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    seat = models.IntegerField(default=0)
+    seat = models.IntegerField(null=True, unique=True)
     connect = models.BooleanField(default=True)
 
     def __str__(self):

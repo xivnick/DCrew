@@ -94,7 +94,7 @@ def room(req, room_id):
 
     # get room data
     room = rooms[0]
-    room_users = RoomUser.objects.filter(room__id=room_id)
+    room_users = RoomUser.objects.filter(room__id=room_id, seat__isnull=False)
 
     # check user in room
     if req.user.id not in (ru.user.id for ru in room_users):
@@ -107,7 +107,7 @@ def room(req, room_id):
 
         # if waiting, get smallest seat
         if room.game is None:
-            room_seats = (ru.seat for ru in room_users if ru.seat > 0)
+            room_seats = (ru.seat for ru in room_users)
             for seat in range(1, room.capacity + 1):
                 if seat not in room_seats:
                     room_user.seat = seat

@@ -14,7 +14,7 @@ def room_list(req):
 
     # 방 목록 가져오기 / 게임 중인 방은 아래
     room_player_num = RoomUser.objects.filter(
-        seat__gt=0, room__id=OuterRef('id')
+        room__id=OuterRef('id'), seat__isnull=False
     ).values('room__id').annotate(playerNum=Count('room__id')).values('playerNum')
     rooms = Room.objects.select_related('host').annotate(
         playerNum=Subquery(room_player_num)
@@ -26,7 +26,7 @@ def room_list(req):
         'capacity': room.capacity,
         'host_name': room.host.first_name,
         'game_id': room.game_id,
-        'player_num': room.playerNum,
+        'player_num': room.playerNum or 0,
         'room_url': resolve_url('room', room_id=room.id),
     } for room in rooms]
 
@@ -95,6 +95,32 @@ def room_user_update(req):
 
         requests.post(SOCKET_URL + '/room/update', data={
             'room': data['room_id'],
+            'target': 'all'
+        })
+
+        return JsonResponse({'message': 'success', 'result': result})
+
+    return JsonResponse({}, status=404)
+
+
+def room_user_seat_update(req):
+
+    if req.method == 'POST':
+        data = json.loads(req.body)
+
+        # check params
+        params = ['room_id', 'user_id', 'seat']
+        for param in params:
+            if param not in data:
+                return JsonResponse({'message': 'need param \'' + param + '\''}, status=422)
+
+        # check user in room
+        result = RoomUser.objects.filter(room__id=data['room_id'], user__id=data['user_id']).update(
+            seat=data['seat']
+        )
+
+        requests.post(SOCKET_URL + '/rooms/update', data={
+            'rooms': [data['room_id'], 0],
             'target': 'all'
         })
 
