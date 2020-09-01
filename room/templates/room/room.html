@@ -14,7 +14,7 @@
 
 {% block top %}
     {{ room.title }}
-    <a id="exit-button" class="text-button" href="{% url 'room_exit' room_id=room.id %}">나가기</a>
+    <a id="exit-button" class="text-button" onclick="exit();" href="#">나가기</a>
 {% endblock top %}
 
 {% block content %}
@@ -84,6 +84,9 @@
             update(target) {
 
                 if(target === 'reload'){
+                    {% if room.host.id != user.id %}
+                        alert('방장이 방을 나가서 방이 사라졌어요.');
+                    {% endif %}
                     location.reload();
                     return;
                 }
@@ -135,5 +138,12 @@
             content.updateSetting(setting);
         }
     })
+
+    const exit = () => {
+        {% if room.host.id == user.id %}
+            if(!confirm("방장이 방을 나가면 방이 사라집니다.")) return;
+        {% endif %}
+        location.href = "{% url 'room_exit' room_id=room.id %}";
+    }
 </script>
 {% endblock script %}
