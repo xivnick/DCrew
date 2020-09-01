@@ -113,11 +113,11 @@
   background-color: #F5FAFF;
   border: 1px solid #767676;
   border-radius: 4px;
-  padding: 15px 56px 15px 10px; }
+  padding: 15px 56px 15px 5px; }
   #spectator-wrapper .spectator-name {
     float: left;
     font-size: 16px;
-    margin-left: 10px; }
+    margin-left: 15px; }
   #spectator-wrapper::after {
     clear: both;
     content: "";
