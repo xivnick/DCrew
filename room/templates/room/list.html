@@ -61,24 +61,23 @@
                 console.log('update ', target);
 
                 if(target === 'all' ||  target === 'room_list'){
-                    axios.get('/api/room/list')
+                    axios.get('{% url 'api_room_list' %}')
                         .then((res) => {
                             this.rooms = res.data.rooms;
                         })
                         .catch((err) => {
                             console.log(err);
-                        })
+                        });
                 }
                 if(target === 'all' || target === 'my_rooms'){
-                    axios.get('/api/room/my_rooms', {
+                    axios.get('{% url 'api_room_my_rooms' %}', {
                         params: {
                             user_id: {% if user.is_authenticated %}{{ user.id }}{% else %}0{% endif %},
                         }
                     }). then((res) => {
                         this.myRooms = res.data.rooms;
-                    })
+                    });
                 }
-
             },
             link (url) {
                 location.href=url;

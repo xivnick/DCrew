@@ -98,7 +98,7 @@
                     return;
                 }
 
-                axios.get('/api/room/users/', {
+                axios.get('{% url 'api_room_users' %}', {
                     params: {
                         room_id: {{ room.id }},
                     }
@@ -136,7 +136,7 @@
                 if(this.mode === 'C') return 'Casual';
             },
             change(seat){
-                axios.post('/api/room/user/seat/update/', {
+                axios.post('{% url 'api_room_user_seat_update' %}', {
                     room_id: {{ room.id }},
                     user_id: {{ user.id }},
                     seat: seat,
@@ -149,7 +149,7 @@
                 });
             },
             kick(user_id){
-                axios.post('/api/room/user/delete/', {
+                axios.post('{% url 'api_room_user_delete' %}', {
                     room_id: {{ room.id }},
                     user_id: user_id,
                 }, {
