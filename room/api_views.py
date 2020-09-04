@@ -70,6 +70,38 @@ def room_users(req):
     return JsonResponse({'room_users': room_users})
 
 
+def room_user_delete(req):
+
+    if req.method == 'POST':
+        data = json.loads(req.body)
+
+        # check params
+        params = ['room_id', 'user_id']
+        for param in params:
+            if param not in data:
+                return JsonResponse({'message': 'need param \'' + param + '\''}, status=422)
+
+        room_id = data['room_id']
+        user_id = data['user_id']
+
+        # check host
+        room = Room.objects.filter(id=room_id)[0]
+        if room.host != req.user:
+            return JsonResponse({'message': 'you\'re not a host'}, status=403)
+
+        result = RoomUser.objects.filter(room__id=room_id, user__id=user_id).delete()
+
+        requests.post(SOCKET_URL + '/rooms/update', data={
+            'rooms': [room_id, 0],
+            'target': 'all'
+        })
+
+
+        return JsonResponse({'message': 'success', 'result': result})
+
+    return JsonResponse({}, status=404)
+
+
 @csrf_exempt
 def room_user_update(req):
 

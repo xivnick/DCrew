@@ -20,25 +20,25 @@
 {% block content %}
     <div class="content-top">게임 설정</div>
     {% if room.host.id == user.id %}
-        <form id="game-form" method="POST" action="#">
-            {% csrf_token %}
-            {{ form.mode }}
-            <div id="stage-wrapper" v-if="mode === 'C'">
-                <div class="pseudo-input" v-html="'Stage '+stage"></div>
-                <input type="range" v-model="stage" v-on:input="sendSetting" id="stage-slider" min="1" max="50">
-            </div>
-            <div id="stage-wrapper" v-else>
-                <input type="hidden" id="stage-slider" value="1" min="1" max="50">
-            </div>
-            <button class="primary-color register-button">게임 시작</button>
-        </form>
-    {% else %}
-        <div>
-            <div class="pseudo-input no-margin" v-html="showMode()"></div>
-            <div id="stage-wrapper" v-if="mode === 'C'">
-                <div class="pseudo-input" v-html="'Stage '+stage"></div>
-            </div>
+    <form id="game-form" method="POST" action="#">
+        {% csrf_token %}
+        {{ form.mode }}
+        <div id="stage-wrapper" v-if="mode === 'C'">
+            <div class="pseudo-input" v-html="'Stage '+stage"></div>
+            <input type="range" v-model="stage" v-on:input="sendSetting" id="stage-slider" min="1" max="50">
         </div>
+        <div id="stage-wrapper" v-else>
+            <input type="hidden" id="stage-slider" value="1" min="1" max="50">
+        </div>
+        <button class="primary-color register-button">게임 시작</button>
+    </form>
+    {% else %}
+    <div>
+        <div class="pseudo-input no-margin" v-html="showMode()"></div>
+        <div id="stage-wrapper" v-if="mode === 'C'">
+            <div class="pseudo-input" v-html="'Stage '+stage"></div>
+        </div>
+    </div>
     {% endif %}
     <div class="divider"></div>
     <div class="content-top">플레이어</div>
@@ -46,6 +46,12 @@
         <div v-for="index in {{ room.capacity }}" class="player-wrapper">
             <div v-if="index in players">
                 <div class="player-name" :class="players[index].connect?'':'disconnect'">[[ players[index]['name'] ]]</div>
+                {% if room.host.id == user.id %}
+                <img v-if="players[index].user_id != {{ room.host.id }}" v-on:click="kick(players[index].user_id)" class="image-button"
+                     src="{% static 'room/image/x.png' %}" width="16" height="16"
+                     style="padding: 1px;"
+                >
+                {% endif %}
             </div>
             <div v-else>
                 <div class="player-name">-</div>
@@ -84,7 +90,6 @@
         },
         methods: {
             update(target) {
-
                 if(target === 'reload'){
                     {% if room.host.id != user.id %}
                         alert('방장이 방을 나가서 방이 사라졌어요.');
@@ -99,7 +104,7 @@
                     }
                 })
                     .then((res) => {
-                        console.log(res.data)
+                        // console.log(res.data);
                         const users = res.data.room_users;
 
                         this.players = {};
@@ -131,7 +136,6 @@
                 if(this.mode === 'C') return 'Casual';
             },
             change(seat){
-                console.log(Cookies.get('CSRFToken'));
                 axios.post('/api/room/user/seat/update/', {
                     room_id: {{ room.id }},
                     user_id: {{ user.id }},
@@ -139,11 +143,23 @@
                 }, {
                     headers: {'X-CSRFToken': Cookies.get('csrftoken')},
                 }).then((res) => {
-                    console.log(res);
+                    // console.log(res);
                 }).catch((err) => {
                     console.log(err);
-                })
+                });
             },
+            kick(user_id){
+                axios.post('/api/room/user/delete/', {
+                    room_id: {{ room.id }},
+                    user_id: user_id,
+                }, {
+                    headers: {'X-CSRFToken': Cookies.get('csrftoken')},
+                }).then((res) => {
+                    // console.log(res);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
         }
     });
 

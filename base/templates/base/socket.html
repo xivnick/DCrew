@@ -36,7 +36,7 @@
     });
     socket.on('update', (target) => {
         content.update(target);
-        console.log('updated called: ', target);
+        // console.log('updated called: ', target);
     });
     socket.on('disconnect', (err, name) => {
         if(err) {
