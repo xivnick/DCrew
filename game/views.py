@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from room.models import Room, RoomUser
-from .models import Game
+from .models import Game, GamePlayer
 from game.forms import CreateGameForm
 
 from dcrew.settings import SOCKET_URL
@@ -19,14 +19,27 @@ def game_create(req, room):
 
             game_instance.stage = req.POST['stage']
 
-            game_instance.playerNum = 3
-
+            # set players into game_player
             room_users = RoomUser.objects.filter(room__id=room.id, seat__isnull=False)
 
-            # for ru in room_users:
-            #
+            game_players = []
+            for ru in room_users:
+                game_player = GamePlayer(
+                    game=game_instance,
+                    player=ru.user,
+                    pid=len(game_players)+1,
+                    seat=ru.seat,
+                )
+                game_players.append(game_player)
+
+            # count playerNum
+            # game_instance.playerNum = len(game_players)
+            game_instance.playerNum = 3
 
             game_instance.save()
+
+            for gp in game_players:
+                gp.save()
 
             Room.objects.filter(id=room.id).update(game=game_instance)
 

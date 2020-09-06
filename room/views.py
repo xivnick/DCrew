@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Subquery, OuterRef, Count
 from .models import Room, RoomUser
+from game.models import Game
 from .forms import CreateRoomForm
 from game.views import game_create, game
 
@@ -91,6 +92,7 @@ def room_end_game(req, room_id):
         room_user = room_users[0]
 
         if room_user.seat:
+            Game.objects.filter(id=room_user.room.game_id).update(status='E')
             Room.objects.filter(id=room_id).update(game=None)
 
             requests.post(SOCKET_URL + '/rooms/update', data={
