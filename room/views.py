@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Subquery, OuterRef, Count
 from .models import Room, RoomUser
 from .forms import CreateRoomForm
-from game.forms import CreateGameForm
+from game.views import game_create, game
 
 from dcrew.settings import SOCKET_URL
 import requests
@@ -74,10 +74,31 @@ def room_exit(req, room_id):
                 room_user = room_users[0]
                 room_user.delete()
 
-                requests.post(SOCKET_URL + '/room/update', data={
-                    'room': room_id,
+                requests.post(SOCKET_URL + '/rooms/update', data={
+                    'rooms': [0, room_id],
                     'target': 'all',
                 })
+
+    return redirect('room_list')
+
+
+def room_end_game(req, room_id):
+    if req.user.is_anonymous:
+        return redirect('room_list')
+
+    room_users = RoomUser.objects.filter(room__id=room_id, user__id=req.user.id)
+    if len(room_users):
+        room_user = room_users[0]
+
+        if room_user.seat:
+            Room.objects.filter(id=room_id).update(game=None)
+
+            requests.post(SOCKET_URL + '/rooms/update', data={
+                'rooms': [0, room_id],
+                'target': 'forward',
+            })
+
+            return redirect('room', room_id=room_id)
 
     return redirect('room_list')
 
@@ -96,31 +117,35 @@ def room(req, room_id):
     room = rooms[0]
     room_users = RoomUser.objects.filter(room__id=room_id)
 
-    # check user in room
-    if req.user.id not in (ru.user.id for ru in room_users):
-        # push user into room
+    if req.method == 'GET':
 
-        # make room player
-        room_user = RoomUser()
-        room_user.room = room
-        room_user.user = req.user
+        # check user in room
+        if req.user.id not in (ru.user.id for ru in room_users):
+            # push user into room
 
-        # if waiting, get smallest seat
-        if room.game is None:
-            room_seats = [ru.seat for ru in room_users if ru.seat is not None]
-            for seat in range(1, room.capacity + 1):
-                if seat not in room_seats:
-                    room_user.seat = seat
-                    break
+            # make room player
+            room_user = RoomUser()
+            room_user.room = room
+            room_user.user = req.user
 
-        # save room player
-        room_user.save()
+            # if waiting, get smallest seat
+            if room.game is None:
+                room_seats = [ru.seat for ru in room_users if ru.seat is not None]
+                for seat in range(1, room.capacity + 1):
+                    if seat not in room_seats:
+                        room_user.seat = seat
+                        break
 
-        requests.post(SOCKET_URL + '/room/update', data={
-            'room': 0,
-            'target': 'all',
-        })
+            # save room player
+            room_user.save()
 
-    create_game_form = CreateGameForm()
+            requests.post(SOCKET_URL + '/room/update', data={
+                'room': 0,
+                'target': 'all',
+            })
 
-    return render(req, 'room/room.html', {'room': room, 'form': create_game_form})
+    if room.game is None:
+        return game_create(req, room)
+
+    else:
+        return game(req, room, room_users)

@@ -5,7 +5,7 @@
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'room/css/room.css' %}?{{ ver }}">
+    <link rel="stylesheet" type="text/css" href="{% static 'game/css/game.css' %}?{{ ver }}">
 {% endblock css %}
 
 {% block nav %}
@@ -25,10 +25,10 @@
         {{ form.mode }}
         <div id="stage-wrapper" v-if="mode === 'C'">
             <div class="pseudo-input" v-html="'Stage '+stage"></div>
-            <input type="range" v-model="stage" v-on:input="sendSetting" id="stage-slider" min="1" max="50">
+            <input name="stage" type="range" v-model="stage" v-on:input="sendSetting" id="stage-slider" min="1" max="50">
         </div>
         <div id="stage-wrapper" v-else>
-            <input type="hidden" id="stage-slider" value="1" min="1" max="50">
+            <input name="stage" type="hidden" id="stage-slider" value="1" min="1" max="50">
         </div>
         <button class="primary-color register-button">게임 시작</button>
     </form>
@@ -68,7 +68,7 @@
         <div v-if="spectators.length === 0" class="spectator-name">
             -
         </div>
-        <img v-on:click="change(null)" class="image-button" src="{% static 'room/image/change.png' %}" width="16" height="16">
+        <img v-if="mySeat" v-on:click="change(null)" class="image-button" src="{% static 'room/image/change.png' %}" width="16" height="16">
     </div>
 {% endblock content %}
 
@@ -83,6 +83,7 @@
             spectators: [],
             stage: 1,
             mode: '',
+            mySeat: null,
         },
         mounted: function () {
             console.log('mounted');
@@ -90,11 +91,18 @@
         },
         methods: {
             update(target) {
-                if(target === 'reload'){
+                if(target === 'delete'){
                     {% if room.host.id != user.id %}
-                        alert('방장이 방을 나가서 방이 사라졌어요.');
+                        alert('방장이 방을 나가서 방이 사라졌어요.')
+                        location.reload();
                     {% endif %}
-                    location.reload();
+                    return;
+                }
+                if(target === 'forward'){
+                    {% if room.host.id != user.id %}
+                        alert('게임이 시작했어요!');
+                        location.reload();
+                    {% endif %}
                     return;
                 }
 
@@ -105,6 +113,7 @@
                 })
                     .then((res) => {
                         // console.log(res.data);
+                        this.mySeat = res.data.my_seat;
                         const users = res.data.room_users;
 
                         this.players = {};

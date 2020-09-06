@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.conf import settings
 
 
 # Create your models here.
@@ -33,3 +34,22 @@ class Game(models.Model):
         choices=STATUS_CHOICES,
         default='P',
     )
+
+
+class GamePlayer(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    game = models.ForeignKey(
+        Game,
+        on_delete=models.CASCADE,
+    )
+    player = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    pid = models.IntegerField()
+    seat = models.IntegerField()
+
+    def __str__(self):
+        return '(g:"' + str(self.game) + '", p:"' + str(self.player) + '")'

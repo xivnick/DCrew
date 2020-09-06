@@ -1,0 +1,122 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}방 만들기 :: {% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'game/css/game.css' %}?{{ ver }}"/>
+    <style>
+        #top-wrapper{
+            height: 10px !important;
+            border-bottom: none !important;
+        }
+        #content-wrapper{
+            margin-top: 0 !important;
+        }
+    </style>
+{% endblock css %}
+
+{% block nav %}
+    <a class="text-button" href="{% url 'room_list' %}">대기실</a>
+{% endblock nav %}
+
+{% block top %}
+    {% if my_seat is not None %}
+    <a id="exit-button" class="text-button" onclick="endGame();" href="#">게임 종료</a>
+    {% else %}
+    <a id="exit-button" class="text-button" onclick="exit();" href="#">나가기</a>
+    {% endif %}
+{% endblock top %}
+
+{% block content %}
+    <div class="content-top">미션</div>
+    <div class="divider"></div>
+    <div class="content-top">플레이어</div>
+    <div class="players-wrapper">
+        <div v-for="index in {{ room.capacity }}" class="player-wrapper">
+            <div v-if="index in players">
+                <div class="player-name" :class="players[index].connect?'':'disconnect'">[[ players[index]['name'] ]]</div>
+            </div>
+            <div v-else>
+                <div class="player-name">-</div>
+            </div>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="content-top">관전</div>
+    <div id="spectator-wrapper">
+        <div v-for="spectator in spectators" class="spectator-name" :class="spectator.connect?'':'disconnect'">
+            [[ spectator.name ]]
+        </div>
+        <div v-if="spectators.length === 0" class="spectator-name">
+            -
+        </div>
+        <img v-if="mySeat" v-on:click="change(null)" class="image-button" src="{% static 'room/image/change.png' %}" width="16" height="16">
+    </div>
+{% endblock content %}
+
+{% block script %}
+{% include 'base/socket.html' %}
+
+<script>
+    const content = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#content-wrapper',
+        data: {
+            players: {},
+            spectators: [],
+            stage: {{ game.stage }},
+            mode: '{{ game.mode }}',
+            mySeat: null,
+        },
+        mounted: function () {
+            console.log('mounted');
+            this.update();
+        },
+        methods: {
+            update(target) {
+                if(target === 'forward'){
+                    alert('게임이 종료됐어요..');
+                    location.reload();
+                    return;
+                }
+
+                axios.get('{% url 'api_room_users' %}', {
+                    params: {
+                        room_id: {{ room.id }},
+                    }
+                })
+                    .then((res) => {
+                        // console.log(res.data);
+                        this.mySeat = res.data.my_seat;
+                        const users = res.data.room_users;
+
+                        this.players = {};
+                        this.spectators = [];
+
+                        for(const user of users){
+                            if(user.seat === null){
+                                this.spectators.push(user);
+                            }
+                            else{
+                                this.players[user.seat] = user;
+                            }
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            },
+        }
+    });
+
+    const endGame = () => {
+        if(!confirm("확인을 누르면 게임이 종료됩니다.")) return;
+        location.href = "{% url 'room_end_game' room_id=room.id %}";
+    }
+    const exit = () => {
+        location.href = "{% url 'room_exit' room_id=room.id %}";
+    }
+</script>
+{% endblock script %}

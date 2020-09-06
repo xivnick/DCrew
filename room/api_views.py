@@ -60,6 +60,12 @@ def room_users(req):
 
     room_users = RoomUser.objects.filter(room__id=room_id)
 
+    my_seat = None
+    for ru in room_users:
+        if ru.user_id == req.user.id:
+            my_seat = ru.seat
+            break
+
     room_users = [{
         'user_id': ru.user_id,
         'name': ru.user.first_name,
@@ -67,7 +73,7 @@ def room_users(req):
         'connect': ru.connect,
     } for ru in room_users]
 
-    return JsonResponse({'room_users': room_users})
+    return JsonResponse({'room_users': room_users, 'my_seat': my_seat})
 
 
 def room_user_delete(req):
@@ -95,7 +101,6 @@ def room_user_delete(req):
             'rooms': [room_id, 0],
             'target': 'all'
         })
-
 
         return JsonResponse({'message': 'success', 'result': result})
 
