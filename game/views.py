@@ -20,7 +20,7 @@ def game_create(req, room):
             game_instance.stage = req.POST['stage']
 
             # set players into game_player
-            room_users = RoomUser.objects.filter(room__id=room.id, seat__isnull=False)
+            room_users = RoomUser.objects.filter(room__id=room.id, seat__isnull=False).order_by('seat')
 
             game_players = []
             for ru in room_users:
@@ -32,18 +32,14 @@ def game_create(req, room):
                 )
                 game_players.append(game_player)
 
-            # count playerNum
-            # game_instance.playerNum = len(game_players)
-            game_instance.playerNum = 3
+            if 3 <= len(game_players) <= 5:
 
-            game_instance.save()
+                game_instance.save()
 
-            for gp in game_players:
-                gp.save()
+                for gp in game_players:
+                    gp.save()
 
-            Room.objects.filter(id=room.id).update(game=game_instance)
-
-            if game_instance is not None:
+                Room.objects.filter(id=room.id).update(game=game_instance)
 
                 requests.post(SOCKET_URL + '/rooms/update', data={
                     'rooms': [0, room.id],
@@ -52,7 +48,15 @@ def game_create(req, room):
 
                 return redirect('room', room_id=room.id)
 
-    create_game_form = CreateGameForm()
+            else:
+                return render(req, 'game/room.html', {
+                    'room': room,
+                    'form': create_game_form,
+                    'error': '3명이 있어야 게임을 할 수 있어요..'},
+                )
+
+    else:
+        create_game_form = CreateGameForm()
 
     return render(req, 'game/room.html', {'room': room, 'form': create_game_form})
 

@@ -32,6 +32,9 @@
         </div>
         <button class="primary-color register-button">게임 시작</button>
     </form>
+        {% if error %}
+            <span class="error-message text-center">{{ error }}</span>
+        {% endif %}
     {% else %}
     <div>
         <div class="pseudo-input no-margin" v-html="showMode()"></div>

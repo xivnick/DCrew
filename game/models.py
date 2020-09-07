@@ -18,9 +18,6 @@ class Game(models.Model):
     )
 
     id = models.AutoField(primary_key=True)
-    playerNum = models.IntegerField(
-        choices=((3, 3), (4, 4), (5, 5)),
-    )
     mode = models.CharField(
         max_length=1,
         choices=MODE_CHOICES,
