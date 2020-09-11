@@ -1,17 +1,25 @@
 from .missions import missions
 from django.http import JsonResponse
+from .models import Game
 import json
 
 
-def mission(req):
+def game(req):
 
-    params = ['stage']
+    params = ['game_id']
     for param in params:
         if param not in req.GET:
             return JsonResponse({'message': 'need param \'' + param + '\''}, status=422)
 
-    stage = int(req.GET['stage'])
+    game_id = int(req.GET['game_id'])
 
-    mission = missions[stage]
+    game = Game.objects.filter(id=game_id)[0]
 
-    return JsonResponse({'mission': mission})
+    game = {
+        'id': game.id,
+        'mode': game.mode,
+        'stage': game.stage,
+        'mission': missions[game.stage]
+    }
+
+    return JsonResponse({'game': game})

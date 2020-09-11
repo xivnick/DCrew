@@ -88,9 +88,12 @@
             mode: '',
             mySeat: null,
         },
+        created: function () {
+            console.log('created');
+            this.update();
+        },
         mounted: function () {
             console.log('mounted');
-            this.update();
         },
         methods: {
             update(target) {
@@ -146,6 +149,7 @@
                 if(this.mode === '') return '모드 선택 중';
                 if(this.mode === 'O') return 'Original';
                 if(this.mode === 'C') return 'Casual';
+                return this.mode;
             },
             change(seat){
                 axios.post('{% url 'api_room_user_seat_update' %}', {

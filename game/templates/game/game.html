@@ -27,18 +27,15 @@
 {% endblock nav %}
 
 {% block top %}
-    <div id="game-description">Original Mode / Stage 1</div>
-    {% if my_seat is not None %}
-    <a id="exit-button" class="text-button" onclick="endGame();" href="#">게임 종료</a>
-    {% else %}
-    <a id="exit-button" class="text-button" onclick="exit();" href="#">나가기</a>
-    {% endif %}
+    <div id="game-description">[[ showMode() ]] Mode / Stage [[ game.stage ]]</div>
+    <a v-if="mySeat === null" id="exit-button" class="text-button" onclick="exit();" href="#">나가기</a>
+    <a v-else id="exit-button" class="text-button" onclick="endGame();" href="#">게임 종료</a>
 {% endblock top %}
 
 {% block content %}
     <div class="content-top">미션</div>
     <div id="mission-wrapper">
-        <p v-for="description in mission.descriptions">[[ description ]]</p>
+        <p v-for="description in game.mission.descriptions">[[ description ]]</p>
     </div>
     <div class="divider"></div>
     <div class="content-top">플레이어</div>
@@ -71,18 +68,29 @@
 <script>
     const content = new Vue({
         delimiters: ['[[', ']]'],
-        el: '#content-wrapper',
+        el: '#body-wrapper',
         data: {
             players: {},
             spectators: [],
-            stage: {{ game.stage }},
-            mode: '{{ game.mode }}',
+            game: {
+                id: {{ room.game.id }},
+                mode: '',
+                stage: 0,
+                mission: {
+                    descriptions: [],
+                }
+            },
+            stage: 1,
+            mode: '',
             mySeat: null,
             mission: {description: ''},
         },
+        created: function () {
+            console.log('created');
+            this.update();
+        },
         mounted: function () {
             console.log('mounted');
-            this.update();
         },
         methods: {
             update(target) {
@@ -92,11 +100,12 @@
                     return;
                 }
 
-                axios.get('{% url 'api_game_mission' %}', {
+                axios.get('{% url 'api_game' %}', {
                     params: {
-                        stage: this.stage,
+                        game_id: {{ room.game_id }},
                     }
                 }).then((res) => {
+                    this.game = res.data.game;
                     this.mission = res.data.mission;
                 }).catch((err) => {
                     console.log(err);
@@ -126,9 +135,13 @@
                     console.log(err);
                 });
             },
+            showMode() {
+                if(this.game.mode === 'O') return 'Original';
+                if(this.game.mode === 'C') return 'Casual';
+                return this.game.mode;
+            },
         }
     });
-
     const endGame = () => {
         if(!confirm("확인을 누르면 게임이 종료됩니다.")) return;
         location.href = "{% url 'room_end_game' room_id=room.id %}";

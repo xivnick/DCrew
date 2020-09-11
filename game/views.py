@@ -66,15 +66,7 @@ def game_create(req, room):
     return render(req, 'game/room.html', {'room': room, 'form': create_game_form})
 
 
-def game(req, room, room_users):
-
-    my_seat = None
-    for ru in room_users:
-        if ru.user_id == req.user.id:
-            my_seat = ru.seat
-            break
-
-    game = Game.objects.filter(id=room.game.id)[0]
+def game(req, room):
     game_players = GamePlayer.objects.filter(game__id=room.game.id)
 
-    return render(req, 'game/game.html', {'game': game, 'game_players': game_players, 'room': room, 'my_seat': my_seat})
+    return render(req, 'game/game.html', {'game_players': game_players, 'room': room})

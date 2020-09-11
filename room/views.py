@@ -150,4 +150,4 @@ def room(req, room_id):
         return game_create(req, room)
 
     else:
-        return game(req, room, room_users)
+        return game(req, room)
