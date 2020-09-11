@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from room.models import Room, RoomUser
 from .models import Game, GamePlayer
 from game.forms import CreateGameForm
+from .missions import missions
 
 from dcrew.settings import SOCKET_URL
 import requests
@@ -11,6 +12,10 @@ import requests
 def game_create(req, room):
 
     if req.method == 'POST':
+
+        if room.game is not None:
+            return redirect('room', room_id=room.id)
+
         create_game_form = CreateGameForm(req.POST)
 
         if create_game_form.is_valid():
@@ -70,5 +75,6 @@ def game(req, room, room_users):
             break
 
     game = Game.objects.filter(id=room.game.id)[0]
+    game_players = GamePlayer.objects.filter(game__id=room.game.id)
 
-    return render(req, 'game/game.html', {'game': game, 'room': room, 'my_seat': my_seat})
+    return render(req, 'game/game.html', {'game': game, 'game_players': game_players, 'room': room, 'my_seat': my_seat})

@@ -97,7 +97,7 @@ def room_end_game(req, room_id):
 
             requests.post(SOCKET_URL + '/rooms/update', data={
                 'rooms': [0, room_id],
-                'target': 'forward',
+                'target': 'end',
             })
 
             return redirect('room', room_id=room_id)
