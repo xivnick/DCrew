@@ -10,7 +10,7 @@ missions = {
         'tasks': 2,
     },
     3: {
-        'descriptions': ['과제 카드 두 장.','과제 우선순위 타일 1, 2.'],
+        'descriptions': ['과제 카드 두 장.', '과제 우선순위 타일 1, 2.'],
         'type': 'basic',
         'tasks': 2,
         'tiles': [1, 2],
@@ -26,7 +26,7 @@ missions = {
         'type': 'special',
     },
     6: {
-        'descriptions': ['과제 카드 세 장.','과제 우선순위 타일 >, >>. 전파 방해.'],
+        'descriptions': ['과제 카드 세 장.', '과제 우선순위 타일 >, >>. 전파 방해.'],
         'type': 'basic',
         'tasks': 2,
         'tiles': [1, 2],
@@ -34,14 +34,14 @@ missions = {
         'communication': 'interference',
     },
     7: {
-        'descriptions': ['과제 카드 세 장.','과제 우선순위 타일 Ω.'],
+        'descriptions': ['과제 카드 세 장.', '과제 우선순위 타일 Ω.'],
         'type': 'basic',
         'tasks': 3,
         'tiles': [-1],
         'strict': True,
     },
     8: {
-        'descriptions': ['과제 카드 세 장.','과제 우선순위 타일 1, 2, 3.'],
+        'descriptions': ['과제 카드 세 장.', '과제 우선순위 타일 1, 2, 3.'],
         'type': 'basic',
         'tasks': 3,
         'tiles': [1, 2, 3],
@@ -57,14 +57,14 @@ missions = {
         'tasks': 4,
     },
     11: {
-        'descriptions': ['과제 카드 네 장.','과제 우선순위 타일 1.','지휘관이 선택한 한 명은 통신을 할 수 없다.'],
+        'descriptions': ['과제 카드 네 장.', '과제 우선순위 타일 1.', '지휘관이 선택한 한 명은 통신을 할 수 없다.'],
         'type': 'special',
         'tasks': 4,
         'tiles': [1],
         'strict': True,
     },
     12: {
-        'descriptions': ['과제 카드 네 장.','과제 우선순위 타일 Ω.','첫 번째 트릭이 끝난 후 각 플레이어는 자신의 오른쪽 플레이어의 손에서 임의의 카드 한 장을 뽑는다.'],
+        'descriptions': ['과제 카드 네 장.', '과제 우선순위 타일 Ω.', '첫 번째 트릭이 끝난 후 각 플레이어는 자신의 오른쪽 플레이어의 손에서 임의의 카드 한 장을 뽑는다.'],
         'type': 'special',
         'tasks': 4,
         'tiles': [-1],
@@ -75,7 +75,7 @@ missions = {
         'type': 'special',
     },
     14: {
-        'descriptions': ['과제 카드 네 장.','과제 우선순위 타일 >, >>, >>>.','전파 방해.'],
+        'descriptions': ['과제 카드 네 장.', '과제 우선순위 타일 >, >>, >>>.', '전파 방해.'],
         'type': 'basic',
         'tasks': 4,
         'tiles': [1, 2, 3],
@@ -83,7 +83,7 @@ missions = {
         'communication': 'interference',
     },
     15: {
-        'descriptions': ['과제 카드 네 장.','과제 우선순위 타일 1, 2, 3, 4.'],
+        'descriptions': ['과제 카드 네 장.', '과제 우선순위 타일 1, 2, 3, 4.'],
         'type': 'basic',
         'tasks': 4,
         'tiles': [1, 2, 3, 4],
@@ -94,18 +94,18 @@ missions = {
         'type': 'special',
     },
     17: {
-        'descriptions': ['과제 카드 두 장.','어떤 9카드로도 트릭을 따내선 안 된다.'],
+        'descriptions': ['과제 카드 두 장.', '어떤 9카드로도 트릭을 따내선 안 된다.'],
         'type': 'special',
         'tasks': 2,
     },
     18: {
-        'descriptions': ['과제 카드 다섯 장.','첫 번째 트릭이 끝날 때까지 통신 두절.',''],
+        'descriptions': ['과제 카드 다섯 장.', '첫 번째 트릭이 끝날 때까지 통신 두절.'],
         'type': 'basic',
         'tasks': 5,
         'communication': 2,
     },
     19: {
-        'descriptions': ['과제 카드 다섯 장.','과제 우선순위 타일 1.','두 번째 트릭이 끝날 때까지 통신 두절.',''],
+        'descriptions': ['과제 카드 다섯 장.', '과제 우선순위 타일 1.', '두 번째 트릭이 끝날 때까지 통신 두절.'],
         'type': 'basic',
         'tasks': 5,
         'tiles': [1],
@@ -113,12 +113,12 @@ missions = {
         'communication': 3,
     },
     20: {
-        'descriptions': ['과제 카드 두 장.','단독 과제 배정.'],
+        'descriptions': ['과제 카드 두 장.', '단독 과제 배정.'],
         'type': 'solo',
         'tasks': 2,
     },
     21: {
-        'descriptions': ['과제 카드 다섯 장.','과제 우선순위 타일 1, 2.','전파 방해.'],
+        'descriptions': ['과제 카드 다섯 장.', '과제 우선순위 타일 1, 2.', '전파 방해.'],
         'type': 'basic',
         'tasks': 5,
         'tiles': [1, 2],
@@ -126,26 +126,26 @@ missions = {
         'communication': 'interference',
     },
     22: {
-        'descriptions': ['과제 카드 다섯 장.','과제 우선순위 타일 >, >>, >>>, >>>>.'],
+        'descriptions': ['과제 카드 다섯 장.', '과제 우선순위 타일 >, >>, >>>, >>>>.'],
         'type': 'basic',
         'tasks': 5,
         'tiles': [1, 2, 3, 4],
         'strict': False,
     },
     23: {
-        'descriptions': ['과제 카드 다섯 장.','과제 우선순위 타일 1, 2, 3, 4, 5.','과제를 선택하기 전에 두 개의 과제 우선순위 타일의 위치를 서로 바꿀 수 있습니다.'],
+        'descriptions': ['과제 카드 다섯 장.', '과제 우선순위 타일 1, 2, 3, 4, 5.', '과제를 선택하기 전에 두 개의 과제 우선순위 타일의 위치를 서로 바꿀 수 있습니다.'],
         'type': 'special',
         'tasks': 5,
         'tiles': [1, 2, 3, 4, 5],
         'strict': True,
     },
     24: {
-        'descriptions': ['과제 카드 여섯 장.','단체 과제 배정.'],
+        'descriptions': ['과제 카드 여섯 장.', '단체 과제 배정.'],
         'type': 'group',
         'tasks': 6,
     },
     25: {
-        'descriptions': ['과제 카드 여섯 장.','과제 우선순위 타일 >, >>.','전파 방해.','(5인 규칙)'],
+        'descriptions': ['과제 카드 여섯 장.', '과제 우선순위 타일 >, >>.', '전파 방해.', '(5인 규칙)'],
         'type': 'basic',
         'tasks': 6,
         'tiles': [1, 2],
@@ -158,15 +158,15 @@ missions = {
         'type': 'basic',
     },
     27: {
-        'descriptions': ['과제 카드 세 장.','단독 과제 배정.','(5인 규칙)'],
+        'descriptions': ['과제 카드 세 장.', '단독 과제 배정.', '(5인 규칙)'],
         'type': 'basic',
     },
     28: {
-        'descriptions': ['과제 카드 여섯 장.','과제 우선순위 타일 1, Ω.','두 번째 트릭이 끝날 때까지 통신 두절.','(5인 규칙)'],
+        'descriptions': ['과제 카드 여섯 장.', '과제 우선순위 타일 1, Ω.', '두 번째 트릭이 끝날 때까지 통신 두절.', '(5인 규칙)'],
         'type': 'basic',
     },
     29: {
-        'descriptions': ['전파 방해.','"밸런스"'],
+        'descriptions': ['전파 방해.', '"밸런스"'],
         'type': 'balance',
     }
 }
